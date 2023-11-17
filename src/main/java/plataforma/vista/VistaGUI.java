@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class VistaGUI {
-    private JFrame frame;
+    private static JFrame frame;
     private JPanel panel;
     private JButton btnIniciarSesion, btnRegistrarse, btnSalir;
     private JTextField txtUsuario;
@@ -74,6 +74,16 @@ public class VistaGUI {
             }
         });
         panel.add(btnSalir);
+
+    }
+
+    /**
+     * Devuelve el marco principal (JFrame) de la aplicación.
+     *
+     * @return el objeto JFrame principal de la aplicación.
+     */
+    public static JFrame getFrame() {
+        return frame;
     }
 
     public void setVisible(boolean visible) {

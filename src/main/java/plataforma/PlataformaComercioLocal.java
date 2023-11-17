@@ -12,8 +12,8 @@ public class PlataformaComercioLocal {
         VistaGUI vista = new VistaGUI(new Controlador(null, plataforma));
         Controlador controlador = new Controlador(vista, plataforma);
         SQLiteDBConnector sqLiteDBConnect = new SQLiteDBConnector();
+        sqLiteDBConnect.connect("Database.db");
         vista.setVisible(true);  // Mostramos la ventana principal
-
-
+        sqLiteDBConnect.readTable("Categorias");
     }
 }
