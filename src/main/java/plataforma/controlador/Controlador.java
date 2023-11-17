@@ -7,6 +7,13 @@ import main.java.plataforma.vista.VistaGUI;
 
 import javax.swing.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class Controlador {
     private main.java.plataforma.vista.VistaGUI vista;
     private Plataforma plataforma;
@@ -31,18 +38,51 @@ public class Controlador {
         }
     }
 
-    private boolean verificarCredenciales(String usuario, String contraseña) {
-        // Implementa la lógica de verificación aquí
-        // Por ahora, retornamos true para simular un inicio de sesión exitoso
-        return true;
+    private boolean verificarCredenciales(String usuario, String contrasena) {
+        String csvFile = "usuarios.csv"; // El nombre del archivo CSV
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Dividir la línea por comas
+                String[] data = line.split(",");
+
+                // Verificar si las credenciales coinciden
+                if (data.length == 2 && data[0].equals(usuario) && data[1].equals(contrasena)) {
+                    return true; // Credenciales encontradas y coinciden
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Ocurrió un error al leer el archivo");
+        }
+
+        return false; // Credenciales no encontradas o no coinciden
     }
 
     public void registrarse(String usuario, String contraseña) {
-        // Lógica para registrarse
         Usuario user = new Usuario(usuario, contraseña);
         plataforma.registrarUsuario(user);
         System.out.println("Usuario registrado con éxito");
-        // Implementar lógica de registro aquí
+
+        // Guardar los detalles del usuario en un archivo CSV
+        String csvFile = "usuarios.csv"; // Nombre del archivo CSV
+        boolean append = new File(csvFile).exists(); // Revisar si el archivo ya existe
+
+        try (FileWriter fw = new FileWriter(csvFile, true); // El segundo argumento 'true' es para habilitar el modo de añadir al archivo
+             PrintWriter pw = new PrintWriter(fw)) {
+
+            if (!append) {
+                // Escribir encabezados si el archivo no existía
+                pw.println("Usuario,Contraseña");
+            }
+
+            // Escribir datos del usuario
+            pw.println(usuario + "," + contraseña);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Ocurrió un error al guardar los datos del usuario");
+        }
     }
 
     public void mostrarVistaNegociosSugeridos() {

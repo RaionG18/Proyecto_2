@@ -14,6 +14,6 @@ public class PlataformaComercioLocal {
         SQLiteDBConnector sqLiteDBConnect = new SQLiteDBConnector();
         sqLiteDBConnect.connect("Database.db");
         vista.setVisible(true);  // Mostramos la ventana principal
-        sqLiteDBConnect.readTable("Categorias");
+        // sqLiteDBConnect.readTable("Categorias");
     }
 }
